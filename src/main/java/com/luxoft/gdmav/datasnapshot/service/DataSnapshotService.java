@@ -25,7 +25,7 @@ public class DataSnapshotService {
     DataSnapshotRepository dataSnapshotRepository;
 
     public Optional<DataSnapshot>  get (Long id ){
-        log.info("get method called ");
+        log.info("get method called with id " +id);
         return Optional.of(dataSnapshotRepository.getById(id))
                 .or(()->Optional.empty());
 
@@ -34,12 +34,11 @@ public class DataSnapshotService {
         log.info("deleting record  "+id);
         dataSnapshotRepository.deleteById(id);
     }
-
     public void uploadCsv(MultipartFile file) {
 
-        log.info("uploading csv records ");
+        log.info(" DataSnapshotService: uploading csv records ");
         try {
-            BufferedReader bufferedReader= new BufferedReader(new InputStreamReader(file.getInputStream(),"UTF8"));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(file.getInputStream(),"UTF8"));
             CSVParser csvParser = new CSVParser(bufferedReader,
                     CSVFormat.DEFAULT
                             .withFirstRecordAsHeader()
@@ -53,15 +52,11 @@ public class DataSnapshotService {
                         Long.parseLong(record.get("primary_key")),
                         record.get("name"),  //[description, name, primary_key, updated_timestamp]"
                         record.get("description"),
-                       "test"
-                        //Date.(record.get("updated_timestamp"))
-
-
+                        Timestamp.valueOf(record.get("updated_timestamp"))
                 );
                 //DataSnapshot.builder().id().name().description().updatedTimeStamp().build();
-                dataSnapshotRepository.save(dataSnapshot);
                 log.info("saved data "+dataSnapshot);
-
+                dataSnapshotRepository.save(dataSnapshot);
             }
 
         }

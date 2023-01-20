@@ -18,9 +18,9 @@ public class DataSnapshotController {
     DataSnapshotService dataSnapshotService;
 
     @PostMapping("/dataSnapshot/upload")
-    public ResponseEntity<CustomMessage> uploadCsvDataSnapshots(@RequestParam("file")MultipartFile file){
-        log.info("controller: uploading csv data snapshots ");
-        if (CSVHelper.hasCSVFormat(file)) {
+    public ResponseEntity<CustomMessage> uploadCsvDataSnapshots( @RequestParam("file") MultipartFile file){
+        log.info("controller: uploading csv data snapshots  from file " +file.getContentType() );
+        if (!CSVHelper.hasCSVFormat(file)) {
             try {
                 dataSnapshotService.uploadCsv(file);
                 return new ResponseEntity(CustomMessage.builder()
@@ -43,9 +43,9 @@ public class DataSnapshotController {
 
 
     @GetMapping("/dataSnapshot/{id}")
-    DataSnapshot getDataSnapshot ( Long id){
+    DataSnapshot getDataSnapshot (@PathVariable String id){
         log.info(" getting datasnapshot with id " +id);
-        return dataSnapshotService.get(1L).get();
+        return dataSnapshotService.get(Long.parseLong(id)).get();
     }
 
     @DeleteMapping("/dataSnapshot/{id}")

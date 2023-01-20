@@ -24,8 +24,8 @@ public class DataSnapshot {
     @NotBlank
     Long id ;
     String name, description;
-    //@Temporal(TemporalType.TIMESTAMP)
-    String updatedTimeStamp;
+    @Temporal(TemporalType.TIMESTAMP)
+    Date updatedTimeStamp;
 
 
 }
