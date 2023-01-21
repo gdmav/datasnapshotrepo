@@ -26,8 +26,9 @@ public class DataSnapshotService {
 
     public Optional<DataSnapshot>  get (Long id ){
         log.info("get method called with id " +id);
-        return Optional.of(dataSnapshotRepository.getById(id))
-                .or(()->Optional.empty());
+        //return Optional.of(dataSnapshotRepository.getById(id))
+        //        .or(()->Optional.empty());
+       return dataSnapshotRepository.findById(id);
 
     }
     public  void delete (Long id ){

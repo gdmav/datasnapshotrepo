@@ -20,7 +20,7 @@ public class DataSnapshotController {
     @PostMapping("/dataSnapshot/upload")
     public ResponseEntity<CustomMessage> uploadCsvDataSnapshots( @RequestParam("file") MultipartFile file){
         log.info("controller: uploading csv data snapshots  from file " +file.getContentType() );
-        if (!CSVHelper.hasCSVFormat(file)) {
+        if (CSVHelper.hasCSVFormat(file)) {
             try {
                 dataSnapshotService.uploadCsv(file);
                 return new ResponseEntity(CustomMessage.builder()
@@ -39,15 +39,11 @@ public class DataSnapshotController {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage("Please upload a csv file! bad file type:"+file.getOriginalFilename()));
     }
-
-
-
     @GetMapping("/dataSnapshot/{id}")
-    DataSnapshot getDataSnapshot (@PathVariable String id){
+    DataSnapshot getDataSnapshot (@PathVariable Long id){
         log.info(" getting datasnapshot with id " +id);
-        return dataSnapshotService.get(Long.parseLong(id)).get();
+        return dataSnapshotService.get(id).get();
     }
-
     @DeleteMapping("/dataSnapshot/{id}")
     void  deleteDataSnapshot (@PathVariable Long id){
         log.info("deleting dataSnapshot with id " +id);
