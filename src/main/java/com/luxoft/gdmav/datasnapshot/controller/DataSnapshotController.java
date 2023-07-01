@@ -40,10 +40,13 @@ public class DataSnapshotController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomMessage("Please upload a csv file! bad file type:"+file.getOriginalFilename()));
     }
     @GetMapping("/dataSnapshot/{id}")
-    DataSnapshot getDataSnapshot (@PathVariable Long id){
+    ResponseEntity<DataSnapshot> getDataSnapshot (@PathVariable("id") Long id){
+
         log.info(" getting datasnapshot with id " +id);
-        return dataSnapshotService.get(id).get();
+
+        return  ResponseEntity.ok(dataSnapshotService.get(id).get());
     }
+    
     @DeleteMapping("/dataSnapshot/{id}")
     void  deleteDataSnapshot (@PathVariable Long id){
         log.info("deleting dataSnapshot with id " +id);
